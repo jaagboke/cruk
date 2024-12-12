@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Record Your Message</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: rgba(255, 255, 255, 0.8);
+      color: #333;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .container {
+      text-align: center;
+      padding: 9px;
+      background-color: rgba(255, 255, 255, 0.8);
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      max-width: 500px;
+      width: 90%;
+      position: absolute;
+      top: 25%;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    video {
+      border: 3px solid #e40087;
+      border-radius: 10px;
+      width: 70%;
+      max-width: 600px;
+      height: auto;
+      margin-bottom: 15px;
+    }
+
+    button {
+      background:  #00B6ED;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin: 5px;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #2E008B;
+    }
+
+    button:disabled {
+      background: #E40087;
+      cursor: not-allowed;
+    }
+
+    a {
+      text-decoration: none;
+      color: #1d4ed8;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    a:hover {
+      color: #2E008B;
+    }
+
+/**navbar**/
+    .top-left{
+            position: absolute;
+            top: 8px;
+            left: 16px;
+            
+        }
+    
+
+  </style>
+</head>
+<body>
+    <nav class="top-left">
+        <img src="./CRUK_logo.png" alt="" width="140px" height="80px">
+    </nav>
+
+  <div class="container">
+    <h1>Share Your Message!</h1>
+    <video id="preview" autoplay muted></video>
+    <div>
+      <button id="startBtn">Start Recording</button>
+      <button id="stopBtn" disabled>Stop Recording</button>
+    </div>
+    <a id="downloadLink" style="display: none;">Download Video</a>
+  </div>
+
+
+  <script>
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const downloadLink = document.getElementById('downloadLink');
+    const preview = document.getElementById('preview');
+    
+    let mediaRecorder;
+    let recordedChunks = [];
+
+    async function initCamera() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+        preview.srcObject = stream;
+
+        mediaRecorder = new MediaRecorder(stream);
+        
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) recordedChunks.push(event.data);
+        };
+
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(recordedChunks, { type: 'video/webm' });
+          const url = URL.createObjectURL(blob);
+          downloadLink.href = url;
+          downloadLink.download = 'recorded_video.webm';
+          downloadLink.style.display = 'block';
+          recordedChunks = [];
+        };
+
+      } catch (error) {
+        alert('Could not access the camera: ' + error.message);
+      }
+    }
+
+    startBtn.addEventListener('click', () => {
+      mediaRecorder.start();
+      startBtn.disabled = true;
+      stopBtn.disabled = false;
+    });
+
+    stopBtn.addEventListener('click', () => {
+      mediaRecorder.stop();
+      startBtn.disabled = false;
+      stopBtn.disabled = true;
+    });
+
+    initCamera();
+  </script>
+</body>
+</html>
