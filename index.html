@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUK Capsule</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: url('girl-with-cancer.jpg') no-repeat center center fixed;
+      background-size: cover;
+      background-blend-mode: lighten;
+      background-color: rgba(255, 255, 255, 0.7);
+    }
+
+    .container {
+      text-align: center;
+      padding: 9px;
+      background-color: rgba(255, 255, 255, 0.8);
+      box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+      max-width: 500px;
+      width: 90%;
+      position: absolute;
+      top: 35%;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #333;
+      margin-bottom: 20px;
+    }
+
+    button {
+      font-size: 1rem;
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #007BFF;
+      color: white;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .top-left{
+        position: absolute;
+        top: 8px;
+        left: 16px;
+        
+    }
+    
+    /* Popup */
+    .popup {
+    display: none;
+    position: fixed; /* Ensures it stays on top of content */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    }
+
+
+    .popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    }
+
+    .popup-content p {
+    font-size: 20px;
+    color: #333;
+    }
+
+
+
+
+
+    /* Responsive styles */
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      button {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+    <nav class="top-left">
+        <img src="./CRUK_logo.png" alt="" width="140px" height="80px">
+    </nav>
+  <div class="container">
+    <h1>Virtual Capsule</h1>
+    <button onclick="location.href='record-video.html'">Record Video</button>
+    <button onclick="location.href='form.html'">Share Message</button>
+  </div>
+
+  <div id="popupMessage" class="popup">
+    <div class="popup-content">
+      <span class="close-btn" onclick="closePopup()">&times;</span>
+      <h2>Welcome to the CRUK Campaign</h2>
+      <p>This website is dedicated to raising awareness and funds for Cancer Research UK. Your support helps fight cancer, and together, we can make a difference.</p>
+      <!-- <button onclick="window.location.href='form.html'">Share Your Message</button> -->
+    </div>
+  </div>
+
+  <div class="popup" onclick="myFunction()">
+    <span class="popuptext" id="myPopup">Popup text...</span>
+  </div>
+  
+  <script src="script.js"></script>
+  <!-- <script>
+    // When the user clicks on <div>, open the popup
+    function myFunction() {
+      var popup = document.getElementById("myPopup");
+      popup.classList.toggle("show");
+    }
+    </script> -->
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const popup = document.getElementById("popupMessage");
+    popup.style.display = "flex"; // Show the popup initially
+    
+    // Close the popup when clicking anywhere outside or on the "X"
+    popup.addEventListener("click", function(e) {
+        if (e.target === this || e.target.classList.contains('close-btn')) {
+            popup.style.display = "none"; // Hide popup
+            document.body.style.overflow = "auto"; // Enable scrolling again
+        }
+    });
+
+    // Optionally, disable scroll while the popup is shown
+    document.body.style.overflow = "hidden"; 
+});
+
+
+
+</script>
+</body>
+
+</html>
